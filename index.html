@@ -1,15 +1,397 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Spectrum SMP site</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectrum SMP - Magical Adventures Await</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(45deg, 
+                #0a0015, #1a0033, #2d1b69, #1a0033, #0a0015);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            color: #e0e6ff;
+            font-family: 'Space Grotesk', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* Floating particles background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: float 6s infinite linear;
+        }
+        
+        .particle:nth-child(1) { background: #ff6b9d; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { background: #4ecdc4; left: 20%; animation-delay: 1s; }
+        .particle:nth-child(3) { background: #45b7d1; left: 30%; animation-delay: 2s; }
+        .particle:nth-child(4) { background: #96ceb4; left: 40%; animation-delay: 3s; }
+        .particle:nth-child(5) { background: #feca57; left: 50%; animation-delay: 4s; }
+        .particle:nth-child(6) { background: #ff9ff3; left: 60%; animation-delay: 5s; }
+        .particle:nth-child(7) { background: #54a0ff; left: 70%; animation-delay: 0.5s; }
+        .particle:nth-child(8) { background: #5f27cd; left: 80%; animation-delay: 1.5s; }
+        .particle:nth-child(9) { background: #00d2d3; left: 90%; animation-delay: 2.5s; }
+        
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .title {
+            font-family: 'Orbitron', monospace;
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff6b9d, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: rainbowShift 3s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(255, 107, 157, 0.5);
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes rainbowShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #b8c6db;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .crystal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .crystal-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .crystal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .crystal-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(78, 205, 196, 0.3);
+            border-color: rgba(78, 205, 196, 0.5);
+        }
+        
+        .crystal-card:hover::before {
+            left: 100%;
+        }
+        
+        .card-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4ecdc4;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .gem-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(45deg, #ff6b9d, #4ecdc4);
+            border-radius: 4px;
+            transform: rotate(45deg);
+            animation: gemPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes gemPulse {
+            0%, 100% { transform: rotate(45deg) scale(1); }
+            50% { transform: rotate(45deg) scale(1.1); }
+        }
+        
+        .card-description {
+            color: #e0e6ff;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(45deg, #ff6b9d, #4ecdc4, #45b7d1);
+            background-size: 300% 300%;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-family: 'Orbitron', monospace;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: btnGlow 3s ease-in-out infinite;
+        }
+        
+        @keyframes btnGlow {
+            0%, 100% { 
+                background-position: 0% 50%;
+                box-shadow: 0 5px 15px rgba(255, 107, 157, 0.4);
+            }
+            50% { 
+                background-position: 100% 50%;
+                box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4);
+            }
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 107, 157, 0.6);
+        }
+        
+        .magic-orb {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(78, 205, 196, 0.3), transparent);
+            animation: orbFloat 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        .magic-orb:nth-child(1) {
+            top: 10%;
+            right: 10%;
+            animation-delay: 0s;
+        }
+        
+        .magic-orb:nth-child(2) {
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 2s;
+            background: radial-gradient(circle, rgba(255, 107, 157, 0.3), transparent);
+        }
+        
+        @keyframes orbFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .installation-steps {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+        
+        .step:hover {
+            background: rgba(78, 205, 196, 0.1);
+        }
+        
+        .step-number {
+            background: linear-gradient(45deg, #ff6b9d, #4ecdc4);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        
+        .step-text {
+            flex: 1;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .crystal-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h3 href="https://github.com/pixelydn/Spectrum-SMP/raw/refs/heads/main/Spectrum%20SMP%200.2.mrpack">Spectrum SMP lastest pack</h3>
-  <h5>Drag this into the laucher to install</h5>
-  <h3 href="https://littleskin.cn/?lang=en">Littleskin</h3>
-  <h5>Create an account here is needed to play without offcial Minecraft account, if you do have, skip this step.</h5>
-  <h3 href="https://github.com/fn2006/PollyMC/releases/download/8.0/PollyMC-Windows-MSVC-Setup-8.0.exe">The launcher -- PollyMC</h3>
-  <h5>This is a setup file so double click install, and follow the steps.</h5>
-  <h5>After that, go to top right, click on Accounts -- Manage Accounts</h5>
-  <h5>On the right panel click on Add authlib-injector, put in your littleskin email and password in the first and second textbox, for the third one, put in https://littleskin.cn/</h5>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <div class="magic-orb"></div>
+    <div class="magic-orb"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">SPECTRUM SMP</h1>
+            <p class="subtitle">Welcome to the Spectrum SMP</p>
+        </div>
+        
+        <div class="crystal-grid">
+            <div class="crystal-card">
+                <h2 class="card-title">
+                    <div class="gem-icon"></div>
+                    Latest Modpack
+                </h2>
+                <p class="card-description">
+                    Download the newest Spectrum SMP modpack and dive into a world of crystalline magic. Experience enhanced gameplay with magical gemstones, powerful spells, and mystical crafting systems.
+                </p>
+                <a href="https://github.com/pixelydn/Spectrum-SMP/raw/refs/heads/main/Spectrum%20SMP%200.2.mrpack" class="download-btn">
+                    ✨ Download Pack
+                </a>
+                <div class="installation-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Download the .mrpack file above</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-text">Drag the file into your launcher to install</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="crystal-card">
+                <h2 class="card-title">
+                    <div class="gem-icon"></div>
+                    Account Setup
+                </h2>
+                <p class="card-description">
+                    Don't have an official Minecraft account? Create a free account with LittleSkin to join our magical realm. Skip this step if you already have a Minecraft account.
+                </p>
+                <a href="https://littleskin.cn/?lang=en" class="download-btn">
+                    🌟 Create Account
+                </a>
+                <div class="installation-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Visit LittleSkin</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-text">Enter your Email and choose a password to register</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="crystal-card">
+                <h2 class="card-title">
+                    <div class="gem-icon"></div>
+                    PollyMC Launcher
+                </h2>
+                <p class="card-description">
+                    PollyMC in our recommanded launcher
+                </p>
+                <a href="https://github.com/fn2006/PollyMC/releases/download/8.0/PollyMC-Windows-MSVC-Setup-8.0.exe" class="download-btn">
+                    ⚡ Download Launcher
+                </a>
+                <div class="installation-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Run the setup file and follow installation steps</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-text">Go to top right → Accounts → Manage Accounts</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-text">Click "Add authlib-injector"</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-text">Enter your LittleSkin email, password, and https://littleskin.cn/</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-  
+</html>
